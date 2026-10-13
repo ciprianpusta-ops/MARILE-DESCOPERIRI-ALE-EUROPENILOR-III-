@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marile Descoperiri ale Europenilor (III). Consecințe asupra vieții oamenilor</title>
+    <style>
+        :root {
+            --primary-color: #1b4965;
+            --secondary-color: #62b6cb;
+            --accent-color: #e63946;
+            --light-bg: #edf6f9;
+            --card-bg: #ffffff;
+            --text-color: #2b2d42;
+            --success: #2a9d8f;
+            --error: #e63946;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--light-bg);
+            color: var(--text-color);
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* BARĂ DE NAVIGARE FIXĂ */
+        nav.top-nav {
+            position: sticky;
+            top: 0;
+            background-color: var(--primary-color);
+            z-index: 1000;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            padding: 12px 20px;
+            flex-wrap: wrap;
+        }
+
+        nav.top-nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 0.9em;
+            padding: 8px 14px;
+            border-radius: 20px;
+            background-color: rgba(255, 255, 255, 0.15);
+            transition: all 0.3s ease;
+        }
+
+        nav.top-nav a:hover {
+            background-color: var(--secondary-color);
+            color: #0f2537;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 20px auto;
+            padding: 0 20px;
+        }
+
+        /* HEADER CU TITLU ALB */
+        header {
+            background: linear-gradient(135deg, var(--primary-color), #0f2537);
+            color: #ffffff;
+            padding: 30px 25px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+            margin-bottom: 30px;
+        }
+
+        header h1 {
+            margin: 0 0 10px 0;
+            font-size: 2em;
+            color: #ffffff;
+        }
+
+        header h2 {
+            margin: 0;
+            font-size: 1.4em;
+            color: #ffffff;
+            border-bottom: none;
+        }
+
+        .subtitle-box {
+            background-color: var(--accent-color);
+            color: white;
+            padding: 10px 18px;
+            border-radius: 8px;
+            font-weight: bold;
+            display: inline-block;
+            margin-top: 15px;
+        }
+
+        .section-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+            border-left: 6px solid var(--primary-color);
+            scroll-margin-top: 80px;
+        }
+
+        .section-card h2 {
+            color: var(--primary-color);
+            border-bottom: 2px solid #e0e0e0;
+            padding-bottom: 8px;
+            margin-top: 0;
+        }
+
+        .exercise-container {
+            background: #f1f5f9;
+            border: 2px dashed #cbd5e1;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 25px 0;
+        }
+
+        .badge {
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 0.8em;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .interactive-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.2s;
+            margin-top: 15px;
+        }
+
+        .interactive-btn:hover {
+            background-color: #0f2537;
+            transform: translateY(-2px);
+        }
+
+        .feedback {
+            margin-top: 10px;
+            padding: 12px;
+            border-radius: 6px;
+            font-weight: bold;
+            display: none;
+        }
+
+        .feedback.correct {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+            display: block;
+        }
+
+        .feedback.incorrect {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+            display: block;
+        }
+
+        /* SELECT STYLING */
+        select {
+            padding: 6px 12px;
+            border-radius: 6px;
+            border: 1px solid #a0aec0;
+            background-color: white;
+            font-size: 0.95em;
+            margin: 0 4px;
+            transition: all 0.2s ease;
+        }
+
+        select.hide-arrow {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            background-image: none !important;
+            padding-right: 12px !important;
+            border-color: var(--primary-color);
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        /* DRAG AND DROP STYLES */
+        .drag-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 15px;
+            min-height: 50px;
+        }
+
+        .drag-item {
+            background: white;
+            border: 2px solid var(--secondary-color);
+            padding: 12px 15px;
+            border-radius: 8px;
+            cursor: grab;
+            user-select: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 500;
+        }
+
+        .drag-item:active { cursor: grabbing; }
+        .drag-item.dragging { opacity: 0.5; background: #e2e8f0; }
+
+        .journal-drop-zone {
+            background-color: #ffffff;
+            border: 2px dashed #0284c7;
+            border-radius: 8px;
+            padding: 15px;
+            min-height: 120px;
+            margin-top: 10px;
+        }
+
+        .journal-pool-zone {
+            background-color: #e2e8f0;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 10px;
+        }
+
+        /* FLASHCARDS */
+        .flashcard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 15px;
+            margin: 15px 0;
+        }
+
+        .flashcard {
+            background: white;
+            border: 2px solid var(--secondary-color);
+            border-radius: 8px;
+            height: 140px;
+            perspective: 1000px;
+            cursor: pointer;
+        }
+
+        .flashcard-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+        }
+
+        .flashcard.flipped .flashcard-inner { transform: rotateY(180deg); }
+
+        .flashcard-front, .flashcard-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px;
+            box-sizing: border-box;
+            border-radius: 6px;
+        }
+
+        .flashcard-front { background-color: #e0f2fe; color: var(--primary-color); font-weight: bold; }
+        .flashcard-back { background-color: var(--primary-color); color: white; transform: rotateY(180deg); }
+
+        .info-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .info-card { padding: 15px; border-radius: 8px; color: white; }
+        .info-dict { background-color: #0284c7; }
+        .info-method { background-color: #7c3aed; }
+        .info-remember { background-color: #d97706; }
+
+        .test-q {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #e2e8f0;
+        }
+    </style>
+</head>
+<body>
+
+<nav class="top-nav">
+    <a href="#cap4-1">4.1. Europa domină lumea</a>
+    <a href="#cap4-2">4.2. Imperii coloniale</a>
+    <a href="#cap4-3">4.3. Schimbări în Europa</a>
+    <a href="#schimburi">Lumea Nouă ⇄ Lumea Veche</a>
+    <a href="#dictionar">Dicționar & De Reținut</a>
+    <a href="#evaluare">Test Evaluativ (10 Ex)</a>
+</nav>
+
+<div class="container">
+
+    <header>
+        <h1>MARILE DESCOPERIRI ALE EUROPENILOR (III)</h1>
+        <h2>CONSECINȚE ASUPRA VIEȚII OAMENILOR</h2>
+        <div class="subtitle-box">
+            Ce schimbări au produs marile descoperiri geografice?
+        </div>
+    </header>
+
+    <!-- SUBPARAGRAF 4.1 -->
+    <div class="section-card" id="cap4-1">
+        <h2>4.1. Europa domină lumea</h2>
+        <p>În secolele al XV-lea și al XVI-lea, europenii au explorat teritorii din Africa, Asia și America, iar în secolul al XVII-lea au descoperit Australia, Noua Zeelandă și diferite insule din Oceanul Pacific. Acestea au intrat sub stăpânirea statelor portughez, spaniol, englez, francez, olandez.</p>
+        <p>Controlând resursele teritoriilor ocupate și făcând comerț pe mări și oceane, Europa și-a asigurat <strong>dominația mondială</strong>.</p>
+
+        <div class="exercise-container">
+            <span class="badge">Exercițiul 1.1 | Verificare Cunoștințe</span>
+            <h3>🌍 Expansiunea Europeană</h3>
+            <p>1. În secolul al XVII-lea, europenii au descoperit continentul <select class="auto-hide" id="ex1_1_1"></select>.</p>
+            <p>2. Prin controlul resurselor și al comerțului oceanic, Europa și-a asigurat dominația <select class="auto-hide" id="ex1_1_2"></select>.</p>
+            <button class="interactive-btn" onclick="checkEx1_1()">Verifică Răspunsul</button>
+            <div class="feedback" id="ex1_1-feedback"></div>
+        </div>
+    </div>
+
+    <!-- SUBPARAGRAF 4.2 -->
+    <div class="section-card" id="cap4-2">
+        <h2>4.2. Imperii coloniale</h2>
+        <p>În anul <strong>1494</strong>, prin <strong>Tratatul de la Tordesillas</strong>, Portugalia și Spania au stabilit teritoriile nou descoperite ce reveneau fiecăreia dintre cele două state și linia de separație dintre acestea. Astfel s-au format primele <strong>imperii coloniale</strong>.</p>
+        <p>Explorarea teritoriilor din Lumea Nouă a fost urmată de cucerirea popoarelor <i>precolumbiene</i> (mayașii, aztecii și incașii). Conchistadorii spanioli, dotați cu cai și arme de foc (pe care indigenii nu le cunoșteau), au cucerit cu ușurință populațiile locale:</p>
+        <ul>
+            <li>În <strong>1519</strong>, <strong>Hernán Cortés</strong> a cucerit statul aztecilor (azi, Mexic) cu circa 600 de soldați.</li>
+            <li>În <strong>1532</strong>, <strong>Francisco Pizarro</strong>, cu numai 180 de oameni, a ocupat imperiul incașilor.</li>
+        </ul>
+
+        <div class="exercise-container">
+            <span class="badge">Exercițiul 2.1 | Carduri Memorie</span>
+            <h3>🎴 Conchistadorii și Cuceririle lor</h3>
+            <div class="flashcard-grid">
+                <div class="flashcard" onclick="this.classList.toggle('flipped')">
+                    <div class="flashcard-inner">
+                        <div class="flashcard-front">Ce tratat din 1494 a împărțit Lumea Nouă?</div>
+                        <div class="flashcard-back">Tratatul de la Tordesillas (între Spania și Portugalia).</div>
+                    </div>
+                </div>
+                <div class="flashcard" onclick="this.classList.toggle('flipped')">
+                    <div class="flashcard-inner">
+                        <div class="flashcard-front">Cine a cucerit Imperiul Aztec în 1519?</div>
+                        <div class="flashcard-back">Hernán Cortés (cu ~600 de soldați).</div>
+                    </div>
+                </div>
+                <div class="flashcard" onclick="this.classList.toggle('flipped')">
+                    <div class="flashcard-inner">
+                        <div class="flashcard-front">Cine a cucerit Imperiul Incaș în 1532?</div>
+                        <div class="flashcard-back">Francisco Pizarro (cu doar 180 de oameni).</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="exercise-container">
+            <span class="badge">Exercițiul 2.2 | Analiză Sursa A (Bernal Díaz del Castillo)</span>
+            <h3>📜 Sosirea spaniolilor în Tenochtitlan</h3>
+            <p><i>„Sosind noi, spaniolii, în orașul Tenochtitlan, am rămas uimiți de mulțimea de oameni și de mărfuri din piață... Aur, pietre scumpe, țesături colorate, piei de animale, legume și fructe...”</i></p>
+            <p>1. Care era capitala aztecilor vizitată de spanioli? <select class="auto-hide" id="ex2_2_1"></select></p>
+            <p>2. Cine era conducătorul aztecilor în momentul întâlnirii cu Hernán Cortés? <select class="auto-hide" id="ex2_2_2"></select></p>
+            <button class="interactive-btn" onclick="checkEx2_2()">Verifică Răspunsul</button>
+            <div class="feedback" id="ex2_2-feedback"></div>
+        </div>
+    </div>
+
+    <!-- SUBPARAGRAF 4.3 -->
+    <div class="section-card" id="cap4-3">
+        <h2>4.3. Schimbări în Europa</h2>
+        <p>Marile descoperiri au influențat economia, cultura și viața de zi cu zi. Comerțul pe Oceanul Atlantic a dezvoltat porturile din Portugalia, Spania, Anglia, Franța și Olanda. S-au înființat companii comerciale (cum a fost <i>Compania engleză a Indiilor de Est</i>, înființată în 1600). În același timp, comerțul pe Marea Mediterană a decăzut treptat.</p>
+        <p>Aurul și argintul aduse din America au dezvoltat economia, dar au dus și la creșterea prețurilor. Alimentația europenilor s-a îmbogățit cu noi produse aduse din America (porumb, cartofi, tomate, cacao, tutun etc.).</p>
+
+        <!-- EXERCIȚIU 3.1 DRAG & DROP FĂRĂ HINTURI/ANI INTEXT -->
+        <div class="exercise-container">
+            <span class="badge">Exercițiul 3.1 | Drag & Drop: Consecințele Marilor Descoperiri</span>
+            <h3>🧩 Ordonează logic consecințele istorice reale!</h3>
+            <p>Trage doar <strong>afirmațiile istorice corecte</strong> în caseta albă de sus în ordinea lor cronologică și logică. Lasă afară cele 2 afirmații false (intrușii)!</p>
+            
+            <p><strong>📋 Caseta Consecințelor Corecte:</strong></p>
+            <div class="drag-container journal-drop-zone" id="drop-zone-4"></div>
+
+            <p style="margin-top: 15px;"><strong>📦 Banca de opțiuni (Alege de aici):</strong></p>
+            <div class="drag-container journal-pool-zone" id="pool-zone-4"></div>
+
+            <button class="interactive-btn" onclick="checkDropZone4()">Verifică Ordinea și Selecția</button>
+            <div class="feedback" id="ex4-feedback"></div>
+        </div>
+    </div>
+
+    <!-- EXERCIȚIU INTERACTIV NOU PENTRU SCHIMBURI -->
+    <div class="section-card" id="schimburi">
+        <h2>🍎 Schimburi între America (Lumea Nouă) și Europa (Lumea Veche)</h2>
+        <p>Descoperirea Americii a produs un schimb uriaș de plante, animale și produse între cele două continente. Răspunde la întrebările de mai jos pentru a clasifica corect produsele!</p>
+        
+        <div class="exercise-container">
+            <span class="badge">Exercițiul 3.2 | Întrebări de clasificare a produselor</span>
+            <h3>🌾 Identifică originea produselor și animalelor!</h3>
+            
+            <p>1. Ce aliment de bază adus din <strong>America în Europa</strong> a schimbat alimentația europenilor? <select class="auto-hide" id="ex_exchange_1"></select></p>
+            <p>2. Ce animal domestic au dus <strong>europenii în America</strong> (necunoscut indigenilor)? <select class="auto-hide" id="ex_exchange_2"></select></p>
+            <p>3. Din ce regiune provin produsele <strong>cacao, tomate, porumb și tutun</strong>? <select class="auto-hide" id="ex_exchange_3"></select></p>
+            <p>4. Ce plantă de cultură au introdus <strong>europenii în America</strong> pentru marile plantații? <select class="auto-hide" id="ex_exchange_4"></select></p>
+
+            <button class="interactive-btn" onclick="checkExchangeAnswers()">Verifică Răspunsurile</button>
+            <div class="feedback" id="exchange-feedback"></div>
+        </div>
+    </div>
+
+    <!-- DICȚIONAR & REȚINUT -->
+    <div class="info-cards" id="dictionar">
+        <div class="info-card info-dict">
+            <h3>📖 Dicționar Istoric</h3>
+            <p><strong>Conchistador:</strong> Cuceritor spaniol din sec. XV–XVII.</p>
+            <p><strong>Imperiu colonial:</strong> Ansamblu de teritorii stăpânite de un stat european (metropolă).</p>
+            <p><strong>Indigen:</strong> Băștinaș, localnic.</p>
+            <p><strong>Precolumbian:</strong> Care a existat în America înainte de sosirea lui Cristofor Columb.</p>
+        </div>
+
+        <div class="info-card info-method">
+            <h3>💡 Metodă de Învățare</h3>
+            <p><strong>Diagrama Schimbărilor:</strong> Înscrie în centru evenimentul „Marile descoperiri (sec. XV-XVI)” și înconjoară-l cu schimbările aduse: alimente noi, mutarea comerțului pe Atlantic, dispariția imperiilor precolumbiene.</p>
+        </div>
+
+        <div class="info-card info-remember">
+            <h3>📌 De Reținut</h3>
+            <ul>
+                <li>Spania și Portugalia au creat primele imperii coloniale prin Tratatul de la Tordesillas.</li>
+                <li>Aztecii și incașii au fost cuceriți de Hernán Cortés și Francisco Pizarro.</li>
+                <li>Comerțul pe Oceanul Atlantic a luat locul celui din Marea Mediterană.</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- TEST EVALUATIV FINAL -->
+    <div class="section-card" id="evaluare" style="margin-top: 30px; border-left-color: var(--accent-color);">
+        <h2>📝 Test Evaluativ Final (10 Întrebări)</h2>
+        <p>Verifică-ți cunoștințele din Lecția 4:</p>
+        <div id="quiz-container"></div>
+        <button class="interactive-btn" style="background-color: var(--accent-color);" onclick="checkQuiz()">Trimite Testul Evaluativ</button>
+        <div class="feedback" id="quiz-feedback"></div>
+    </div>
+
+</div>
+
+<script>
+    function shuffle(array) {
+        let currentIndex = array.length, randomIndex;
+        while (currentIndex != 0) {
+            randomIndex = Math.floor(Math.random() * currentIndex);
+            currentIndex--;
+            [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+        }
+        return array;
+    }
+
+    function setupHideArrowListeners() {
+        document.querySelectorAll('select.auto-hide').forEach(select => {
+            select.addEventListener('change', function() {
+                if (this.value !== "") {
+                    this.classList.add('hide-arrow');
+                } else {
+                    this.classList.remove('hide-arrow');
+                }
+            });
+        });
+    }
+
+    // Exercițiul 1.1
+    function initEx1_1() {
+        let opts1 = shuffle(["Australia", "Asia", "Europa"]);
+        let opts2 = shuffle(["mondială", "locală", "regională"]);
+
+        document.getElementById('ex1_1_1').innerHTML = '<option value="">-- continent --</option>' + opts1.map(o=>`<option value="${o}">${o}</option>`).join('');
+        document.getElementById('ex1_1_2').innerHTML = '<option value="">-- tip dominație --</option>' + opts2.map(o=>`<option value="${o}">${o}</option>`).join('');
+    }
+
+    function checkEx1_1() {
+        let v1 = document.getElementById('ex1_1_1').value === "Australia";
+        let v2 = document.getElementById('ex1_1_2').value === "mondială";
+        let fb = document.getElementById('ex1_1-feedback');
+
+        if(v1 && v2) {
+            fb.className = 'feedback correct';
+            fb.innerText = 'Corect! Europenii au descoperit Australia în sec. XVII și au impus dominația mondială.';
+        } else {
+            fb.className = 'feedback incorrect';
+            fb.innerText = 'Incorect. Consultă paragraful 4.1!';
+        }
+    }
+
+    // Exercițiul 2.2
+    function initEx2_2() {
+        let opts1 = shuffle(["Tenochtitlan", "Cuzco", "Madrid"]);
+        let opts2 = shuffle(["Montezuma", "Atahualpa", "Pizarro"]);
+
+        document.getElementById('ex2_2_1').innerHTML = '<option value="">-- oraș --</option>' + opts1.map(o=>`<option value="${o}">${o}</option>`).join('');
+        document.getElementById('ex2_2_2').innerHTML = '<option value="">-- conducător --</option>' + opts2.map(o=>`<option value="${o}">${o}</option>`).join('');
+    }
+
+    function checkEx2_2() {
+        let v1 = document.getElementById('ex2_2_1').value === "Tenochtitlan";
+        let v2 = document.getElementById('ex2_2_2').value === "Montezuma";
+        let fb = document.getElementById('ex2_2-feedback');
+
+        if(v1 && v2) {
+            fb.className = 'feedback correct';
+            fb.innerText = 'Foarte bine! Tenochtitlan era capitala aztecilor condusă de Montezuma.';
+        } else {
+            fb.className = 'feedback incorrect';
+            fb.innerText = 'Incorect. Privește Sursa A și imaginea B din lecție!';
+        }
+    }
+
+    // DRAG AND DROP EXERCIȚIUL 3.1 - FĂRĂ HINTURI (ANI / TEXTE AJUTĂTOARE)
+    const dragData = [
+        { id: "d1", order: 1, text: "Tratatul de la Tordesillas stabilește linia de separație a teritoriilor între Spania și Portugalia.", isCorrect: true },
+        { id: "d2", order: 2, text: "Conchistadorii Hernán Cortés și Francisco Pizarro cuceresc imperiile aztec și incaș.", isCorrect: true },
+        { id: "d3", order: 3, text: "Comerțul pe Oceanul Atlantic se dezvoltă intens, în timp ce cel din Marea Mediterană decade.", isCorrect: true },
+        { id: "d4", order: 4, text: "Sunt aduse în Europa produse noi precum porumbul, cartoful, cacaoa și tomate.", isCorrect: true },
+        { id: "d5", order: 99, text: "Marea Mediterană devine cel mai important centru al comerțului global din secolul al XVII-lea.", isCorrect: false },
+        { id: "d6", order: 99, text: "Populațiile indigene aztece au invadat Spania folosind corăbii rapide și arme de foc.", isCorrect: false }
+    ];
+
+    function initDragDrop4() {
+        const pool = document.getElementById('pool-zone-4');
+        const drop = document.getElementById('drop-zone-4');
+        pool.innerHTML = '';
+        drop.innerHTML = '';
+
+        shuffle([...dragData]).forEach(item => {
+            let el = document.createElement('div');
+            el.className = 'drag-item';
+            el.draggable = true;
+            el.dataset.order = item.order;
+            el.dataset.correct = item.isCorrect;
+            el.innerHTML = `<span>☰</span> <span>${item.text}</span>`;
+            
+            el.addEventListener('dragstart', () => el.classList.add('dragging'));
+            el.addEventListener('dragend', () => el.classList.remove('dragging'));
+
+            pool.appendChild(el);
+        });
+
+        setupContainer(pool);
+        setupContainer(drop);
+    }
+
+    function setupContainer(container) {
+        container.addEventListener('dragover', e => {
+            e.preventDefault();
+            const afterElement = getAfterElement(container, e.clientY);
+            const dragging = document.querySelector('.dragging');
+            if (dragging) {
+                if (afterElement == null) {
+                    container.appendChild(dragging);
+                } else {
+                    container.insertBefore(dragging, afterElement);
+                }
+            }
+        });
+    }
+
+    function getAfterElement(container, y) {
+        const draggables = [...container.querySelectorAll('.drag-item:not(.dragging)')];
+        return draggables.reduce((closest, child) => {
+            const box = child.getBoundingClientRect();
+            const offset = y - box.top - box.height / 2;
+            if (offset < 0 && offset > closest.offset) {
+                return { offset: offset, element: child };
+            } else {
+                return closest;
+            }
+        }, { offset: Number.NEGATIVE_INFINITY }).element;
+    }
+
+    function checkDropZone4() {
+        const items = [...document.querySelectorAll('#drop-zone-4 .drag-item')];
+        const fb = document.getElementById('ex4-feedback');
+
+        if(items.length === 0) {
+            fb.className = 'feedback incorrect';
+            fb.innerText = 'Trage opțiunile din caseta de jos în cea de sus!';
+            return;
+        }
+
+        let hasFalse = items.some(i => i.dataset.correct === "false");
+        if(hasFalse) {
+            fb.className = 'feedback incorrect';
+            fb.innerText = 'Atenție! Ai introdus o afirmație istorică falsă! Îndepărteaz-o.';
+            return;
+        }
+
+        if(items.length !== 4) {
+            fb.className = 'feedback incorrect';
+            fb.innerText = 'Nu ai pus toate cele 4 consecințe reale!';
+            return;
+        }
+
+        let isOrdered = true;
+        for(let i = 0; i < items.length; i++) {
+            if(parseInt(items[i].dataset.order) !== (i + 1)) {
+                isOrdered = false;
+                break;
+            }
+        }
+
+        if(isOrdered) {
+            fb.className = 'feedback correct';
+            fb.innerText = '🎉 Excelent! Ai identificat corect toate consecințele istorice și ordinea lor fără indicii!';
+        } else {
+            fb.className = 'feedback incorrect';
+            fb.innerText = 'Opțiunile alese sunt corecte, dar ordinea lor logică/cronologică trebuie potrivită!';
+        }
+    }
+
+    // EXERCIȚIU INTERACTIV SCHIMBURI
+    function initExchangeExercise() {
+        let o1 = shuffle(["Cartoful", "Secara", "Orezul"]);
+        let o2 = shuffle(["Calul", "Curcanul", "Lama"]);
+        let o3 = shuffle(["America (Lumea Nouă)", "Europa (Lumea Veche)", "Australia"]);
+        let o4 = shuffle(["Trestia de zahăr", "Cacaoa", "Tutunul"]);
+
+        document.getElementById('ex_exchange_1').innerHTML = '<option value="">-- produs --</option>' + o1.map(o=>`<option value="${o}">${o}</option>`).join('');
+        document.getElementById('ex_exchange_2').innerHTML = '<option value="">-- animal --</option>' + o2.map(o=>`<option value="${o}">${o}</option>`).join('');
+        document.getElementById('ex_exchange_3').innerHTML = '<option value="">-- origine --</option>' + o3.map(o=>`<option value="${o}">${o}</option>`).join('');
+        document.getElementById('ex_exchange_4').innerHTML = '<option value="">-- plantă --</option>' + o4.map(o=>`<option value="${o}">${o}</option>`).join('');
+    }
+
+    function checkExchangeAnswers() {
+        let a1 = document.getElementById('ex_exchange_1').value === "Cartoful";
+        let a2 = document.getElementById('ex_exchange_2').value === "Calul";
+        let a3 = document.getElementById('ex_exchange_3').value === "America (Lumea Nouă)";
+        let a4 = document.getElementById('ex_exchange_4').value === "Trestia de zahăr";
+
+        let fb = document.getElementById('exchange-feedback');
+
+        if(a1 && a2 && a3 && a4) {
+            fb.className = 'feedback correct';
+            fb.innerText = 'Bravo! Ai identificat corect toate schimburile de plante și animale dintre Lumea Nouă și Lumea Veche!';
+        } else {
+            fb.className = 'feedback incorrect';
+            fb.innerText = 'Unele răspunsuri sunt incorecte. Verifică lista de alimente/animale specifice fiecărui continent și reîncearcă!';
+        }
+    }
+
+    // TEST EVALUATIV 10 ÎNTREBĂRI
+    const quizData = [
+        { q: "1. Ce tratat din 1494 a stabilit linia de demarcație între domeniile spaniol și portughez?", options: ["Tratatul de la Tordesillas", "Tratatul de la Versailles", "Tratatul de la Madrid", "Tratatul de la Lisabona"], ans: "Tratatul de la Tordesillas" },
+        { q: "2. Ce conchistador spaniol a cucerit Imperiul Aztec în anul 1519?", options: ["Hernán Cortés", "Francisco Pizarro", "Cristofor Columb", "Amerigo Vespucci"], ans: "Hernán Cortés" },
+        { q: "3. În ce an a cucerit Francisco Pizarro Imperiul Incaș?", options: ["1532", "1492", "1519", "1600"], ans: "1532" },
+        { q: "4. Care dintre următoarele popoare face parte din civilizațiile precolumbiene?", options: ["Mayașii", "Romanii", "Grecii", "Egiptenii"], ans: "Mayașii" },
+        { q: "5. Ce arme neobișnuite pentru băștinași au folosit conchistadorii spanioli?", options: ["Cai și arme de foc", "Arcuri și săgeți", "Sulițe de lemn", "Catapulte de piatră"], ans: "Cai și arme de foc" },
+        { q: "6. Ce ocean a devenit principalul drum comercial după Marile Descoperiri?", options: ["Oceanul Atlantic", "Marea Mediterană", "Marea Neagră", "Marea Baltică"], ans: "Oceanul Atlantic" },
+        { q: "7. Ce companie comercială renumită a fost înființată de englezi în anul 1600?", options: ["Compania Indiilor de Est", "Compania Mediteraneană", "Compania Atlantică", "Compania de Nord"], ans: "Compania Indiilor de Est" },
+        { q: "8. Ce produs alimentar a fost adus din America în Europa?", options: ["Cartoful", "Orezul", "Secara", "Trestia de zahăr"], ans: "Cartoful" },
+        { q: "9. Ce animal a fost dus din Europa pe continentul american?", options: ["Calul", "Curcanul", "Lama", "Jaguarul"], ans: "Calul" },
+        { q: "10. Ce reprezintă un «imperiu colonial»?", options: ["Ansamblu de teritorii stăpânite de o metropolă europeană", "O alianță între regi egali", "O țară fără ieșire la mare", "Un continent nelocuit"], ans: "Ansamblu de teritorii stăpânite de o metropolă europeană" }
+    ];
+
+    function initQuiz() {
+        const container = document.getElementById('quiz-container');
+        container.innerHTML = '';
+        quizData.forEach((qObj, idx) => {
+            let div = document.createElement('div');
+            div.className = 'test-q';
+            div.innerHTML = `<p><strong>${qObj.q}</strong></p>`;
+            shuffle([...qObj.options]).forEach(opt => {
+                div.innerHTML += `<label style="display:block; margin:4px 0;"><input type="radio" name="q_${idx}" value="${opt}"> ${opt}</label>`;
+            });
+            container.appendChild(div);
+        });
+    }
+
+    function checkQuiz() {
+        let score = 0;
+        quizData.forEach((qObj, idx) => {
+            let sel = document.querySelector(`input[name="q_${idx}"]:checked`);
+            if(sel && sel.value === qObj.ans) score++;
+        });
+
+        let fb = document.getElementById('quiz-feedback');
+        if(score === quizData.length) {
+            fb.className = 'feedback correct';
+            fb.innerText = `🏆 Excelent! Punctaj maxim: ${score}/${quizData.length}! Stăpânești perfect Lecția 4!`;
+        } else {
+            fb.className = 'feedback incorrect';
+            fb.innerText = `Ai obținut ${score} din ${quizData.length} puncte. Recitește paragrafele și reîncearcă!`;
+        }
+    }
+
+    window.onload = () => {
+        initEx1_1();
+        initEx2_2();
+        initDragDrop4();
+        initExchangeExercise();
+        initQuiz();
+        setupHideArrowListeners();
+    };
+</script>
+
+</body>
+</html>
